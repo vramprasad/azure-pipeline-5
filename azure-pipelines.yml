@@ -27,3 +27,5 @@ stages:
         steps:
           - pwsh: |
               Get-Location
+              Set-Content $(certificateName) 'Test Content'
+              ls
