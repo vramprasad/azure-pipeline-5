@@ -27,5 +27,5 @@ stages:
         steps:
           - pwsh: |
               Get-Location
-              Set-Content $(certificateName) 'Test Content'
+              Set-Content ${{ parameters.certificateName }} 'Test Content'
               ls
