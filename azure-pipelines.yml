@@ -27,5 +27,6 @@ stages:
         steps:
           - pwsh: |
               Get-Location
-              Set-Content ${{ parameters.certificateName }} 'Test Content'
+              echo $env:certificateName
+              Set-Content test.txt $env:certificateName
               ls
