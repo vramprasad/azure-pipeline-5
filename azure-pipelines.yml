@@ -21,12 +21,12 @@ stages:
   - stage: PrintfromPowershell
     displayName: 'Print from Powershell'
     jobs:
-      - job: GetDocumentAPITestsDEV
-        displayName: 'DEV - GetDocumentAPI Tests'
-        condition: eq('${{ parameters.targetEnvironment }}', 'DEV')
+      - job: PFP
+        displayName: 'Print from Powershell'
         steps:
           - pwsh: |
               Get-Location
-              echo $env:certificateName
-              Set-Content test.txt $env:certificateName
+              echo 'Value in next line'
+              echo ${{ parameters.certificateName }}
+              Set-Content test.txt ${{ parameters.certificateName }}
               ls
