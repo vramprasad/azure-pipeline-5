@@ -1,1 +1,29 @@
-First
+trigger: none
+
+pool:
+  name: RPLocalPool
+  demands:
+    - agent.name -equals RPLocalMac
+parameters:
+  - name: targetEnvironment
+    displayName: "Target Environment"
+    type: string
+    default: DEV
+    values:
+      - DEV
+      - TEST
+      - ACC
+  - name: certificateName
+    displayName: 'Certificate name as in Keyvault'
+    type: string
+    default: 'BMC Certificate'
+stages:
+  - stage: PrintfromPowershell
+    displayName: 'Print from Powershell'
+    jobs:
+      - job: GetDocumentAPITestsDEV
+        displayName: 'DEV - GetDocumentAPI Tests'
+        condition: eq('${{ parameters.targetEnvironment }}', 'DEV')
+        steps:
+          - pwsh: |
+              Get-Location
