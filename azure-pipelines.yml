@@ -3,30 +3,28 @@ trigger: none
 pool:
   name: RPLocalPool
   demands:
-    - agent.name -equals RPLocalMac
-parameters:
-  - name: targetEnvironment
-    displayName: "Target Environment"
-    type: string
-    default: DEV
-    values:
-      - DEV
-      - TEST
-      - ACC
-  - name: certificateName
-    displayName: 'Certificate name as in Keyvault'
-    type: string
-    default: 'BMC Certificate'
+   - agent.name -equals RPLocalMac
+   
 stages:
-  - stage: PrintfromPowershell
-    displayName: 'Print from Powershell'
-    jobs:
-      - job: PFP
-        displayName: 'Print from Powershell'
-        steps:
-          - pwsh: |
-              Get-Location
-              echo 'Value in next line'
-              echo ${{ parameters.certificateName }}
-              Set-Content test.txt ${{ parameters.certificateName }}
-              ls
+- stage: Stage1
+  displayName: 'Create cert'
+  jobs: 
+  - job: CreateFile
+    displayName: 'Create File'
+    steps:
+      - pwsh: |
+          Get-Location
+          Set-Content cert.pfx 'Real contents of pfx file here'
+      - task: CopyFiles@2
+        displayName: 'Copy Files'
+        inputs:
+          SourceFolder: '$(Build.SourcesDirectory)'
+          Contents: '*.pfx'
+          TargetFolder: '$(Build.ArtifactStagingDirectory)'
+      - task: PublishPipelineArtifact@1
+        displayName: 'Publish PFX file'
+        inputs:
+          targetPath: '$(Build.ArtifactStagingDirectory)'
+          artifact: 'deploy_pfx'
+          publishLocation: 'pipeline'
+        
