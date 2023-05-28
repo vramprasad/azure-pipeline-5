@@ -1,9 +1,9 @@
 trigger: none
 
 pool:
-  name: RPLocalPool
+  name: RPLocalPoolHP
   demands:
-   - agent.name -equals RPLocalMac
+   - agent.name -equals RPLocalWin
    
 stages:
 - stage: Stage1
